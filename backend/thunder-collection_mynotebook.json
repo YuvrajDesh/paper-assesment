@@ -1,0 +1,84 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "mynotebook",
+    "dateExported": "2023-08-27T09:30:14.153Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "b271cb12-aa23-40e6-aa6a-9e566d69a095",
+            "name": "Authentication",
+            "containerId": "",
+            "created": "2023-07-28T09:44:46.274Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "5e4e08b9-a035-4fcc-838d-8dc8e89fa321",
+            "colId": "b7893b6f-59a8-4a9e-8025-8b73056011a4",
+            "containerId": "b271cb12-aa23-40e6-aa6a-9e566d69a095",
+            "name": "Create a new user",
+            "url": "localhost:5000/api/auth/createuser",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-07-28T09:46:06.849Z",
+            "modified": "2023-07-30T15:13:52.356Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\" : \"Yuvraj\",\n  \"email\" : \"yuvraj@gmail.com\",\n  \"password\":\"donno1\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "1db4b9ca-7384-4807-8020-5b6e3338ed66",
+            "colId": "b7893b6f-59a8-4a9e-8025-8b73056011a4",
+            "containerId": "b271cb12-aa23-40e6-aa6a-9e566d69a095",
+            "name": "create a login endpoint",
+            "url": "localhost:5000/api/auth/login",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-07-29T17:42:45.085Z",
+            "modified": "2023-08-01T14:24:20.991Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "xml",
+                "raw": "{\n \n  \"email\" : \"yuvraj@gmail.com\",\n  \"password\":\"donno1\"\n}\n",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "2d417a22-8e44-45d1-8d18-d3e4067242cc",
+            "colId": "b7893b6f-59a8-4a9e-8025-8b73056011a4",
+            "containerId": "b271cb12-aa23-40e6-aa6a-9e566d69a095",
+            "name": "getuser  using middleware",
+            "url": "localhost:5000/api/auth/getuser",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-07-30T08:02:42.882Z",
+            "modified": "2023-08-01T14:26:15.566Z",
+            "headers": [
+                {
+                    "name": "auth-token",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjRjNjdlMzBiNzVhNjhkNDliMTE5YWJmIn0sImlhdCI6MTY5MDg5OTg2Mn0.Tdv92CCSAMIqKs95FyPnwduunF2EWzpGSF01I_vJu9A"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
