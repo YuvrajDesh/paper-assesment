@@ -1,9 +1,18 @@
 const mongoose = require('mongoose');
+const mongoURI = "mongodb://localhost:27017/paper";
+const connectMongo = () => {
+ // Connect to MongoDB
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-const mongoURI = "mongodb://localhost:27017/paper"
-const connectMongo = ()=>{
-  mongoose.connect(mongoURI);
-  console.log("connected to mongo");
-      
-}
-module.exports = connectMongo;
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Connection error:'));
+db.once('open', function () {
+  console.log('Connected to MongoDB');
+});
+};
+
+module.exports = {connectMongo};
+
