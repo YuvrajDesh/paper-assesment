@@ -5,14 +5,14 @@ const User = require('../models/User')
 const { body, validationResult } = require('express-validator');
 const bcrypt = require("bcrypt")
 var jwt = require('jsonwebtoken');
-const JWT_SECRET = 'Harryisagoodb$oy';
+const JWT_SECRET = 'isagoodb$oy';
 const Admin = require('../models/Admin');
 var fetchuser = require('../middleware/fetchuser');
 // Create a User using: POST "/api/auth/createuser". Doesn't require Auth
 router.post('/createuser', [
    body('name', 'Enter a valid name').isLength({ min: 3 }),
    body('email', 'Enter a valid email').isEmail(),
-   body('password', 'Password must be atleast 5 characters').isLength({ min: 5 }),
+   body('password', 'Password must be atleast 5 characters').isLength({ min: 3 }),
  ], async (req, res) => {
    // If there are errors, return Bad request and the errors
    const errors = validationResult(req);
@@ -78,7 +78,8 @@ router.post('/login', [
         }
       }
       const authtoken = jwt.sign(data, JWT_SECRET);
-      res.json({authtoken})
+      const status = "ok";
+      res.json({authtoken,status})
   
     } catch (error) {
       console.error(error.message);
