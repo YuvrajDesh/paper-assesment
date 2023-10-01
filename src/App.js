@@ -7,25 +7,26 @@ import PdfUploadForm from './components/PdfUploadForm';
 import Signup from './components/Signup';
 import Login  from './components/Login';
 import UserDetails from './components/UserDetails';
+
 function App() {
   const isLoggedIn = window.localStorage.getItem("loggedIn");
 
   return (
     <Router>
-    <div className="App">
-      <div className="auth-wrapper">
-        <div className="auth-inner">
-          <Routes>
-            <Route exact path="/" element={<Login />} />
-            <Route path="/userDetails" element={<UserDetails/>} /> {/* Define the UserDetails route */}
-
-            <Route path="/sign-in" element={<Login />} />
-            <Route path="/sign-up" element={<Signup />} />
-          </Routes>
-        </div>
+      <div className="App">
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={isLoggedIn == "true" ? <UserDetails /> : <Login />}
+          />
+          <Route path="/sign-in" element={<Login />} />
+          <Route path="/sign-up" element={<Signup />} />
+          <Route path="/userDetails" element={<UserDetails />} />
+        </Routes>
+        {/* <ImageUpload/> */}
       </div>
-    </div>
-  </Router>
+    </Router>
   );
 }
 

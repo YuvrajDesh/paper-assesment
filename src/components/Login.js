@@ -48,6 +48,9 @@ export default function Login() {
   };
   
     return (
+      <div className="auth-wrapper">
+        <div className="auth-inner">
+
       <form onSubmit={handleSubmit}>
         <h3>Sign In</h3>
         <div className="mb-3">
@@ -82,5 +85,7 @@ export default function Login() {
            <a href="sign-up">create account?</a>
         </p>
       </form>
+        </div>
+      </div>
   );
 }
