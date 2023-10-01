@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
+import Alert from "./Alert"; // Import the Alert component
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -8,12 +9,17 @@ function SignUp() {
   });
   const [userType, setUserType] = useState("");
   const [secretKey, setSecretKey] = useState("");
+  const [alert, setAlert] = useState(null); // State for managing alerts
+  
 
-
+  
+  const handleAlertClose = () => {
+    setAlert(null); // Set alert to null to close it
+  };
   const handleSubmit = (e) => {
     if (userType == "Admin" && secretKey != "yuvi") {
       e.preventDefault();
-      alert("Invalid Admin");
+      setAlert({ message: "Invalid Admin", type: "danger" }); // Show an alert
     }else{
 
       e.preventDefault();
@@ -34,6 +40,14 @@ function SignUp() {
         .then((res) => res.json())
         .then((data) => {
           console.log(data, "userRegister");
+          if (data.errors) {
+            // Handle errors from the server
+            setAlert({ message: data.errors[0].msg, type: "danger" });
+          }else{
+            setAlert({ message: "Successfully registed", type: "success" }); // Show an alert
+          }
+          
+
         });
     }
    
@@ -50,6 +64,23 @@ function SignUp() {
   return (
     <div className="auth-wrapper">
         <div className="auth-inner">
+        {alert && (
+          <Alert
+            message={alert.message}
+            type={alert.type}
+            dismissible={true}
+            onClose={handleAlertClose}
+          >
+            {/* Include a close button within the Alert */}
+            <button
+              type="button"
+              className="btn-close"
+              aria-label="Close"
+              onClick={handleAlertClose}
+            ></button>
+          </Alert>
+        )}
+         
         <form onSubmit={handleSubmit}>
       <h3>Sign Up</h3>
       <div>
@@ -92,16 +123,7 @@ function SignUp() {
         />
       </div>
 
-      {/* <div className="mb-3">
-        <label>Last name</label>
-        <input
-          type="text"
-          className="form-control"
-          name="lname"
-          placeholder="Last name"
-          onChange={handleInputChange}
-        />
-      </div> */}
+     
 
       <div className="mb-3">
         <label>Email address</label>

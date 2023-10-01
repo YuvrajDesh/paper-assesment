@@ -1,5 +1,6 @@
 import React, { Component, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import Alert from "./Alert";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -9,6 +10,8 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [alert, setAlert] = useState(null); // State for managing alerts
+
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -31,11 +34,14 @@ export default function Login() {
       .then((data) => {
         console.log(data)
         if (data.status == "ok") {
-          alert("login successful");
+         
           window.localStorage.setItem("token", data.authtoken);
           window.localStorage.setItem("loggedIn", true);
 
           navigate('/userDetails'); // Navigate to UserDetails route
+        }else {
+          // Handle errors from the server
+          setAlert({ message: "Enter valid crediantials", type: "danger" });
         }
       });
   }
@@ -46,11 +52,21 @@ export default function Login() {
       [name]: value,
     }));
   };
+  const handleAlertClose = () => {
+    setAlert(null);
+  };
   
     return (
       <div className="auth-wrapper">
         <div className="auth-inner">
-
+        {alert && (
+          <Alert
+            message={alert.message}
+            type={alert.type}
+            dismissible={true}
+            onClose={handleAlertClose}
+          ></Alert>
+        )}
       <form onSubmit={handleSubmit}>
         <h3>Sign In</h3>
         <div className="mb-3">
