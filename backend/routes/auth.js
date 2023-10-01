@@ -32,6 +32,7 @@ router.post('/createuser', [
       name: req.body.name,
       password: hash,
       email: req.body.email,
+      userType : req.body.userType
     })
     const data = {
       user:{
@@ -91,7 +92,7 @@ router.post('/login', [
 
 // ROUTE 3: Get loggedin User Details using: POST "/api/auth/getuser". Login required
 
- router.post('/getuser',fetchuser
+ router.post('/getuser'
  , async (req, res) => {
 try{
 const userId = req.user; 

@@ -5,7 +5,8 @@ const UserSchema = new Schema({
   name:  String ,
   email: {type :String,unique : true},
   password: String,
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now },
+  userType : String
   });
   const User = mongoose.model('user', UserSchema);
   User.createIndexes();

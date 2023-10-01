@@ -29,11 +29,10 @@ export default function Login() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "userRegister");
         console.log(data)
         if (data.status == "ok") {
           alert("login successful");
-          window.localStorage.setItem("token", data.data);
+          window.localStorage.setItem("token", data.authtoken);
           window.localStorage.setItem("loggedIn", true);
 
           navigate('/userDetails'); // Navigate to UserDetails route
@@ -73,25 +72,14 @@ export default function Login() {
 
           />
         </div>
-        <div className="mb-3">
-          <div className="custom-control custom-checkbox">
-            <input
-              type="checkbox"
-              className="custom-control-input"
-              id="customCheck1"
-            />
-            <label className="custom-control-label" htmlFor="customCheck1">
-              Remember me
-            </label>
-          </div>
-        </div>
+       
         <div className="d-grid">
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
         </div>
         <p className="forgot-password text-right">
-          Forgot <a href="sign-up">password?</a>
+           <a href="sign-up">create account?</a>
         </p>
       </form>
   );

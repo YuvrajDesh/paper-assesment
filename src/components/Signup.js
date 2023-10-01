@@ -6,27 +6,37 @@ function SignUp() {
     email: "",
     password: "",
   });
+  const [userType, setUserType] = useState("");
+  const [secretKey, setSecretKey] = useState("");
+
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const { name, email, password } = formData;
-    console.log(name, email, password);
-    fetch("http://localhost:5000/api/auth/createuser", {
-      method: "POST",
-      crossDomain: true,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-       name, email, password
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data, "userRegister");
-      });
+    if (userType == "Admin" && secretKey != "yuvi") {
+      e.preventDefault();
+      alert("Invalid Admin");
+    }else{
+
+      e.preventDefault();
+      const { name, email, password } = formData;
+      console.log(name, email, password);
+      fetch("http://localhost:5000/api/auth/createuser", {
+        method: "POST",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+         name, email, password, userType,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data, "userRegister");
+        });
+    }
+   
   };
 
   const handleInputChange = (e) => {
@@ -40,6 +50,34 @@ function SignUp() {
   return (
     <form onSubmit={handleSubmit}>
       <h3>Sign Up</h3>
+      <div>
+            Register As
+            <input
+              type="radio"
+              name="UserType"
+              value="User"
+              onChange={(e) => setUserType(e.target.value)}
+            />
+            User
+            <input
+              type="radio"
+              name="UserType"
+              value="Admin"
+              onChange={(e) => setUserType(e.target.value)}
+            />
+            Admin
+          </div>
+          {userType == "Admin" ? (
+            <div className="mb-3">
+              <label>Secret Key</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Secret Key"
+                onChange={(e) => setSecretKey(e.target.value)}
+              />
+            </div>
+          ) : null}
 
       <div className="mb-3">
         <label>Name</label>
