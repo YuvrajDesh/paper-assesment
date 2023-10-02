@@ -23,6 +23,8 @@ function App() {
           <Route path="/sign-in" element={<Login />} />
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/userDetails" element={<UserDetails />} />
+          <Route path="/pdfUpload" element={<PdfUploadForm />} />
+          
         </Routes>
         {/* <ImageUpload/> */}
       </div>

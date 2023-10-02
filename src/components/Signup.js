@@ -7,7 +7,7 @@ function SignUp() {
     email: "",
     password: "",
   });
-  const [userType, setUserType] = useState("");
+  const [userType, setUserType] = useState("User"); //initial value will be user
   const [secretKey, setSecretKey] = useState("");
   const [alert, setAlert] = useState(null); // State for managing alerts
   
