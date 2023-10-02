@@ -16,24 +16,27 @@ const upload = multer({ storage });
 const Pdf = require('../models/Pdf');
 
 
-router.post('/addpdf',  async (req, res) => {
-  
+router.post('/addpdf',upload.array('pdfcontent',5), async (req, res) => {
   try {
-    const { nameofpdf, pdfowner, pdfcontent } = req.body;
+    console.log(req.body)
+    const { nameofpdf, pdfowner } = req.body;
+    console.log(req.files)
+    const pdfcontents = req.files.map((file) => {
+      return { nameofpdf, pdfowner, pdfcontent: file.buffer };
+    });
 
-    if (!nameofpdf || !pdfowner || !pdfcontent) {
-      return res.status(400).json({ error: 'Please provide all required fields' });
+    if (!pdfcontents.every((pdf) => pdf.nameofpdf && pdf.pdfowner && pdf.pdfcontent)) {
+      return res.status(400).json({ error: 'Please provide all required fields for each PDF' });
     }
 
-    const pdf = new Pdf({ nameofpdf, pdfowner, pdfcontent });
-    
-    await pdf.save();
+    const insertResults = await Pdf.insertMany(pdfcontents);
 
-    res.json({ message: 'PDF file uploaded successfully' });
+    res.json({ message: 'PDF files uploaded successfully', results: insertResults });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 
 module.exports = router;

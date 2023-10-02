@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 function PdfUploadForm() {
   const [nameofpdf, setNameOfPdf] = useState('');
   const [pdfowner, setPdfOwner] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const files = Array.from(event.target.files);
+    setSelectedFiles(files);
   };
 
   const handleNameOfPdfChange = (event) => {
@@ -19,41 +20,47 @@ function PdfUploadForm() {
   };
   const handleUpload = async () => {
     try {
-      if (!nameofpdf || !pdfowner || !selectedFile) {
-        alert('Please fill in all required fields');
+      if (!nameofpdf || !pdfowner || selectedFiles.length === 0) {
+        alert('Please fill in all required fields and select one or more files');
         return;
       }
-
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedFile);
-      reader.onload = async () => {
-        const pdfcontent = reader.result;
-
-        const formData = new FormData();
-        formData.append('nameofpdf', nameofpdf);
-        formData.append('pdfowner', pdfowner);
-        formData.append('pdfcontent', pdfcontent);
-
-        const response = await fetch('http://localhost:5000/api/pdfs/addpdf', {
-          method: 'POST',
-          body: JSON.stringify({ nameofpdf, pdfowner, pdfcontent }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
+  
+      const formDataArray = selectedFiles.map((file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        return new Promise((resolve) => {
+          reader.onload = () => {
+            const pdfcontent = reader.result;
+            const formData = new FormData();
+            formData.append('nameofpdf', nameofpdf);
+            formData.append('pdfowner', pdfowner);
+            formData.append('pdfcontent', pdfcontent);
+            resolve(formData);
+          };
         });
-
-        if (response.ok) {
-          alert('PDF uploaded successfully');
-        } else {
-          alert('Error uploading PDF');
-        }
-      };
+      });
+  
+      const responses = await Promise.all(
+        formDataArray.map((formData) =>
+          fetch('http://localhost:5000/api/pdfs/addpdf', {
+            method: 'POST',
+            body: formData,
+          })
+        )
+      );
+  
+      const successResponses = responses.filter((response) => response.ok);
+      if (successResponses.length === responses.length) {
+        alert('All PDFs uploaded successfully');
+      } else {
+        alert('Some PDFs failed to upload');
+      }
     } catch (error) {
       console.error(error);
-      alert('Error uploading PDF');
+      alert('Error uploading PDFs');
     }
   };
-
+  
   return (
     <div>
       <h2>Upload PDF</h2>
