@@ -24,17 +24,15 @@ export default function UserDetails() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "userData");
-        if (data.data.userType == "Admin") {
+        if (data.userType == "Admin") {
           setAdmin(true);
         }
 
         setUserData(data.data);
 
+       
       });
   }, []);
-  return (
-    
-    admin ? <AdminHome /> : <PdfUploadForm userData={userData} />
-     
-  );
+
+  return admin ? <PdfUploadForm /> : <UserHome />;
 }

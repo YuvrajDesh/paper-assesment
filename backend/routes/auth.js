@@ -92,21 +92,27 @@ router.post('/login', [
 
 // ROUTE 3: Get loggedin User Details using: POST "/api/auth/getuser". Login required
 
- router.post('/getuser',
-  async (req, res) => {
-try{
-const userId = req.user; 
-console.log(userId);
+router.post('/getuser', async (req, res) => {
+  try {
+    const { token } = req.body;
 
-const user = await User.findById(userId).select("-password")
- res.send(user)
+    // Verify the token on the server-side
+    const data = jwt.verify(token, JWT_SECRET);
+    
+    const userId = data.user.id;
+    const user = await User.findById(userId).select("-password")
+    console.log(user)
+    res.send(user);
+  } catch (error) {
+    // Handle any errors that occur during token verification
+    console.error(error);
+    res.status(500).send({ status: "error", data: error });
+  }
+});
 
-}catch(error){
 
- res.status(500).send("Internal Server Error")
-}
 
-})
+
 // Endpoint to fetch all  users based on gmail
 router.get('/getusers', async (req, res) => {
   try {

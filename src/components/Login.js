@@ -28,6 +28,7 @@ export default function Login() {
       body: JSON.stringify({
         email,
         password,
+        
       }),
     })
       .then((res) => res.json())
@@ -38,7 +39,7 @@ export default function Login() {
           window.localStorage.setItem("token", data.authtoken);
           window.localStorage.setItem("loggedIn", true);
 
-          navigate = "/userDetails";
+          navigate('/userDetails'); // Navigate to UserDetails route
         }else {
           // Handle errors from the server
           setAlert({ message: "Enter valid crediantials", type: "danger" });
