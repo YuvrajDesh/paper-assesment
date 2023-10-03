@@ -38,7 +38,7 @@ export default function Login() {
           window.localStorage.setItem("token", data.authtoken);
           window.localStorage.setItem("loggedIn", true);
 
-          navigate('/pdfUpload'); // Navigate to UserDetails route
+          navigate = "/userDetails";
         }else {
           // Handle errors from the server
           setAlert({ message: "Enter valid crediantials", type: "danger" });

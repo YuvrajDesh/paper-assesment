@@ -7,6 +7,7 @@ import PdfUploadForm from './components/PdfUploadForm';
 import Signup from './components/Signup';
 import Login  from './components/Login';
 import UserDetails from './components/UserDetails';
+import UserHome from './components/UserHome';
 
 function App() {
   const isLoggedIn = window.localStorage.getItem("loggedIn");
@@ -20,10 +21,11 @@ function App() {
             path="/"
             element={isLoggedIn == "true" ? <UserDetails /> : <Login />}
           />
-          <Route path="/sign-in" element={<Login />} />
-          <Route path="/sign-up" element={<Signup />} />
-          <Route path="/userDetails" element={<UserDetails />} />
-          <Route path="/pdfUpload" element={<PdfUploadForm />} />
+          <Route exact path="/sign-in" element={<Login />} />
+          <Route exact path="/sign-up" element={<Signup />} />
+          <Route exact path="/userDetails" element={<UserDetails />} />
+          <Route exact path="/pdfUpload" element={<PdfUploadForm />} />
+          <Route exact path="/userHome" element={<UserHome />} />
           
         </Routes>
         {/* <ImageUpload/> */}

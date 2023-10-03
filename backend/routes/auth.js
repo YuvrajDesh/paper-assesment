@@ -93,7 +93,7 @@ router.post('/login', [
 // ROUTE 3: Get loggedin User Details using: POST "/api/auth/getuser". Login required
 
  router.post('/getuser',
- fetchuser, async (req, res) => {
+  async (req, res) => {
 try{
 const userId = req.user; 
 console.log(userId);
@@ -111,7 +111,6 @@ const user = await User.findById(userId).select("-password")
 router.get('/getusers', async (req, res) => {
   try {
     const users = await User.find({}, 'email'); // Assuming your User model has a 'email' field
-    console.log(users)
     res.json(users);
   } catch (error) {
     console.error(error);
