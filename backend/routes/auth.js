@@ -107,6 +107,17 @@ const user = await User.findById(userId).select("-password")
 }
 
 })
+// Endpoint to fetch all  users based on gmail
+router.get('/getusers', async (req, res) => {
+  try {
+    const users = await User.find({}, 'email'); // Assuming your User model has a 'email' field
+    console.log(users)
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 
  
