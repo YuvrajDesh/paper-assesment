@@ -16,7 +16,7 @@ const upload = multer({ storage });
 const Pdf = require('../models/Pdf');
 
 
-router.post('/addpdf',  async (req, res) => {
+router.post('/addpdf', upload.array('pdfcontent', 10), async (req, res) => {
   
   try {
     const { stream, subject, exam , pdfcontent ,selectedUserId } = req.body;

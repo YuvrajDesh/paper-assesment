@@ -1,15 +1,16 @@
-import React, { useState ,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function PdfUploadForm() {
   const [stream, setStream] = useState('');
   const [subject, setSubject] = useState('');
   const [exam, setExam] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]); // State to capture the selected files
   const [selectedUserId, setSelectedUserId] = useState(''); // State to capture the selected user's _id
 
   const [users, setUsers] = useState([]);
+  
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    setSelectedFiles(event.target.files);
   };
 
   const handleStreamChange = (event) => {
@@ -23,47 +24,47 @@ function PdfUploadForm() {
   const handleExamChange = (event) => {
     setExam(event.target.value);
   };
+  
   const handleUserChange = (event) => {
     setSelectedUserId(event.target.value); // Update the selected user's _id
   };
+
   const handleUpload = async () => {
     try {
-      if (!stream || !subject || !exam || !selectedFile || !selectedUserId) {
+      if (!stream || !subject || !exam || selectedFiles.length === 0 || !selectedUserId) {
         alert('Please fill in all required fields');
         return;
       }
 
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedFile);
-      reader.onload = async () => {
-        const pdfcontent = reader.result;
+      const formData = new FormData();
+      formData.append('stream', stream);
+      formData.append('subject', subject);
+      formData.append('exam', exam);
+      formData.append('userId', selectedUserId);
 
-        const formData = new FormData();
-        formData.append('stream', stream);
-        formData.append('subject', subject);
-        formData.append('exam', exam);
-        formData.append('pdfcontent', pdfcontent);
-        formData.append('userId', selectedUserId); // Include selected user's _id
+      // Append each selected file to the FormData object
+      for (let i = 0; i < selectedFiles.length; i++) {
+        formData.append('pdfcontent', selectedFiles[i]);
+      }
 
-        const response = await fetch('http://localhost:5000/api/pdfs/addpdf', {
-          method: 'POST',
-          body: JSON.stringify({ stream, subject,exam, pdfcontent,selectedUserId }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          alert('PDF uploaded successfully');
-        } else {
-          alert('Error uploading PDF');
-        }
-      };
+      const response = await fetch('http://localhost:5000/api/pdfs/addpdf', {
+        method: 'POST',
+        body: JSON.stringify({ stream, subject,exam, selectedFiles,selectedUserId }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        alert('PDFs uploaded successfully');
+      } else {
+        alert('Error uploading PDFs');
+      }
     } catch (error) {
       console.error(error);
-      alert('Error uploading PDF');
+      alert('Error uploading PDFs');
     }
   };
+
   useEffect(() => {
     // Fetch subjects from your API endpoint
     fetch('http://localhost:5000/api/auth/getusers')
@@ -75,7 +76,6 @@ function PdfUploadForm() {
         console.error(error);
       });
   }, []); // Empty dependency array to fetch data once when the component mounts
-
 
   return (
     <div className="container">
@@ -130,7 +130,7 @@ function PdfUploadForm() {
       </div>
       
       <div className="mb-3">
-        <input className="form-control" type="file" onChange={handleFileChange} />
+        <input className="form-control" type="file" onChange={handleFileChange} multiple/>
       </div>
       <div className="mb-3">
         <button className="btn btn-primary" onClick={handleUpload}>Upload</button>
