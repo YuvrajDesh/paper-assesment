@@ -37,4 +37,25 @@ router.post('/addpdf', upload.array('pdfcontent', 10), async (req, res) => {
   }
 });
 
+// Endpoint to fetch PDFs for a specific user
+router.post('/fetchpdfs', async (req, res) => {
+  try {
+    const { selectedUserId } = req.body;
+
+    // Use the selectedUserId to query the database and fetch PDFs for the user
+    // Replace this with your actual database query
+
+    const userPdfs = await Pdf.find({ selectedUserId });
+    const pdfIds = userPdfs.map(pdf => pdf._id);
+    console.log(pdfIds)
+    // Send the user's PDFs as a response
+    res.json(userPdfs);
+  } catch (error) {
+    console.error('Error fetching PDFs:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+
 module.exports = router;

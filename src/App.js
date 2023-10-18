@@ -8,6 +8,7 @@ import Signup from './components/Signup';
 import Login  from './components/Login';
 import UserDetails from './components/UserDetails';
 import UserHome from './components/UserHome';
+import UserPdfs from './components/UserPdfs';
 
 function App() {
   const isLoggedIn = window.localStorage.getItem("loggedIn");
@@ -26,6 +27,8 @@ function App() {
           <Route exact path="/userDetails" element={<UserDetails />} />
           <Route exact path="/pdfUpload" element={<PdfUploadForm />} />
           <Route exact path="/userHome" element={<UserHome />} />
+          <Route exact path="/userPdfs" element={<UserPdfs />} />
+
           
         </Routes>
         {/* <ImageUpload/> */}

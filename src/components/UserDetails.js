@@ -3,6 +3,7 @@ import AdminHome from "./AdminHome";
 
 import UserHome from "./UserHome";
 import PdfUploadForm from "./PdfUploadForm";
+import UserPdfs from "./UserPdfs";
 
 export default function UserDetails() {
   const [userData, setUserData] = useState("");
@@ -28,11 +29,11 @@ export default function UserDetails() {
           setAdmin(true);
         }
 
-        setUserData(data.data);
+        setUserData(data);
 
        
       });
   }, []);
 
-  return admin ? <PdfUploadForm /> : <UserHome />;
+  return admin ? <AdminHome /> : <UserPdfs userData = {userData}/>;
 }
